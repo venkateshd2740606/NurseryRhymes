@@ -110,7 +110,9 @@ enum class LearningLanguage(val displayName: String) {
     ENGLISH("English"),
     HINDI("हिंदी"),
     TELUGU("తెలుగు"),
-    TAMIL("தமிழ்")
+    TAMIL("தமிழ்"),
+    KANNADA("ಕನ್ನಡ"),
+    MALAYALAM("മലയാളം")
 }
 
 data class Rhyme(
@@ -122,9 +124,13 @@ data class Rhyme(
     val hindiTitle: String? = null,
     val teluguTitle: String? = null,
     val tamilTitle: String? = null,
+    val kannadaTitle: String? = null,
+    val malayalamTitle: String? = null,
     val hindiLines: List<String>? = null,
     val teluguLines: List<String>? = null,
-    val tamilLines: List<String>? = null
+    val tamilLines: List<String>? = null,
+    val kannadaLines: List<String>? = null,
+    val malayalamLines: List<String>? = null
 ) {
     init {
         require(lines.isNotEmpty()) { "Each rhyme must have at least one line" }
@@ -135,6 +141,8 @@ data class Rhyme(
         LearningLanguage.HINDI -> hindiTitle ?: title
         LearningLanguage.TELUGU -> teluguTitle ?: title
         LearningLanguage.TAMIL -> tamilTitle ?: title
+        LearningLanguage.KANNADA -> kannadaTitle ?: title
+        LearningLanguage.MALAYALAM -> malayalamTitle ?: title
     }
 
     fun linesFor(language: LearningLanguage): List<String> = when (language) {
@@ -142,6 +150,8 @@ data class Rhyme(
         LearningLanguage.HINDI -> hindiLines ?: lines
         LearningLanguage.TELUGU -> teluguLines ?: lines
         LearningLanguage.TAMIL -> tamilLines ?: lines
+        LearningLanguage.KANNADA -> kannadaLines ?: lines
+        LearningLanguage.MALAYALAM -> malayalamLines ?: lines
     }
 }
 

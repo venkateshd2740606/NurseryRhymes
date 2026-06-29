@@ -104,6 +104,7 @@
     <string name="for_parents_hint">Choose the language used for letters, numbers, and rhymes in lessons.</string>
     <string name="lesson_language">Lesson language</string>
     <string name="rhyme_language">Rhyme language</string>
+    <string name="speak_line">Speak line</string>
     <string name="parent_gate_title">Parents only</string>
 
     <!-- Challenges -->

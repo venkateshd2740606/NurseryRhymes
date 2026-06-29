@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -25,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +41,15 @@ import com.nurseryrhymes.R
 import com.nurseryrhymes.domain.model.LearningLanguage
 import com.nurseryrhymes.domain.model.NurseryRhymesGame
 import com.nurseryrhymes.engine.NurseryRhymesEngine
+import com.nurseryrhymes.util.RhymeTtsHelper
 
 @Composable
 fun NurseryRhymesBoard(
     game: NurseryRhymesGame,
     learningLanguage: LearningLanguage,
     reducedMotion: Boolean,
+    soundEnabled: Boolean,
+    rhymeTts: RhymeTtsHelper,
     onNextLine: () -> Unit,
     onPrevLine: () -> Unit,
     onRhymeSelected: (Int) -> Unit,
@@ -61,6 +66,19 @@ fun NurseryRhymesBoard(
     }
     val canPrev = NurseryRhymesEngine.canPrevLine(game)
     val canNext = NurseryRhymesEngine.canNextLine(game)
+    val currentLineText = localizedLines.getOrNull(game.currentLineIndex).orEmpty()
+
+    LaunchedEffect(
+        game.currentRhymeIndex,
+        game.currentLineIndex,
+        learningLanguage,
+        soundEnabled,
+        currentLineText
+    ) {
+        if (soundEnabled && currentLineText.isNotBlank()) {
+            rhymeTts.speak(currentLineText, learningLanguage)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -121,13 +139,35 @@ fun NurseryRhymesBoard(
             shape = RoundedCornerShape(16.dp),
             tonalElevation = 2.dp
         ) {
-            Text(
-                text = localizedLines.getOrNull(game.currentLineIndex).orEmpty(),
-                modifier = Modifier.padding(24.dp),
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center,
-                lineHeight = MaterialTheme.typography.headlineMedium.lineHeight
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = currentLineText,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 16.dp),
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center,
+                    lineHeight = MaterialTheme.typography.headlineMedium.lineHeight
+                )
+                IconButton(
+                    onClick = {
+                        if (soundEnabled && currentLineText.isNotBlank()) {
+                            rhymeTts.speak(currentLineText, learningLanguage)
+                        }
+                    },
+                    enabled = soundEnabled && currentLineText.isNotBlank()
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.VolumeUp,
+                        contentDescription = stringResource(R.string.speak_line)
+                    )
+                }
+            }
         }
 
         Row(

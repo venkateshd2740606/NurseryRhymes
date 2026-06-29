@@ -28,6 +28,7 @@ import com.nurseryrhymes.presentation.ui.components.NurseryRhymesBoard
 import com.nurseryrhymes.presentation.viewmodel.GameLoadError
 import com.nurseryrhymes.presentation.viewmodel.GameViewModel
 import com.nurseryrhymes.util.FeedbackHelper
+import com.nurseryrhymes.util.rememberRhymeTts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -75,6 +76,7 @@ fun GameScreen(
     val rewardedAdReady by adManager.rewardedAdReady.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = context as? Activity
+    val rhymeTts = rememberRhymeTts()
     var paused by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -452,6 +454,8 @@ fun GameScreen(
                         game = g,
                         learningLanguage = learningLanguage,
                         reducedMotion = reducedMotion,
+                        soundEnabled = soundEnabled,
+                        rhymeTts = rhymeTts,
                         onNextLine = {
                             viewModel.onNextLine()
                             FeedbackHelper.onPour(context, hapticFeedback, soundEnabled)
