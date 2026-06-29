@@ -272,6 +272,7 @@ data class UserPreferences(
     val personalizedAds: Boolean = false,
     val language: String = "system",
     val learningLanguage: LearningLanguage = LearningLanguage.ENGLISH,
+    val useBundledAudio: Boolean = true,
     val unlockedThemes: Set<String> = setOf(AppTheme.SYSTEM.name, AppTheme.LIGHT.name, AppTheme.DARK.name)
 )
 

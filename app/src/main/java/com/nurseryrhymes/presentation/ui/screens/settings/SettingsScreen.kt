@@ -74,6 +74,7 @@ fun SettingsScreen(
             Text(stringResource(R.string.sound_feedback), style = MaterialTheme.typography.titleMedium)
             SettingsSwitch(stringResource(R.string.haptic_feedback), prefs.hapticFeedback, viewModel::setHaptic)
             SettingsSwitch(stringResource(R.string.sound_effects), prefs.soundEnabled, viewModel::setSound)
+            SettingsSwitch(stringResource(R.string.bundled_audio), prefs.useBundledAudio, viewModel::setUseBundledAudio)
             SettingsSwitch(stringResource(R.string.show_timer), prefs.timerVisible, viewModel::setTimerVisible)
 
             Text(stringResource(R.string.language), style = MaterialTheme.typography.titleMedium)

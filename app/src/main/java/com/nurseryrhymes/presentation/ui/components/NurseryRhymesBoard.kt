@@ -41,7 +41,7 @@ import com.nurseryrhymes.R
 import com.nurseryrhymes.domain.model.LearningLanguage
 import com.nurseryrhymes.domain.model.NurseryRhymesGame
 import com.nurseryrhymes.engine.NurseryRhymesEngine
-import com.nurseryrhymes.util.RhymeTtsHelper
+import com.nurseryrhymes.util.RhymeSpeechHelper
 
 @Composable
 fun NurseryRhymesBoard(
@@ -49,7 +49,7 @@ fun NurseryRhymesBoard(
     learningLanguage: LearningLanguage,
     reducedMotion: Boolean,
     soundEnabled: Boolean,
-    rhymeTts: RhymeTtsHelper,
+    rhymeSpeech: RhymeSpeechHelper,
     onNextLine: () -> Unit,
     onPrevLine: () -> Unit,
     onRhymeSelected: (Int) -> Unit,
@@ -76,7 +76,7 @@ fun NurseryRhymesBoard(
         currentLineText
     ) {
         if (soundEnabled && currentLineText.isNotBlank()) {
-            rhymeTts.speak(currentLineText, learningLanguage)
+            rhymeSpeech.speak(rhyme.id, game.currentLineIndex, currentLineText, learningLanguage)
         }
     }
 
@@ -157,7 +157,7 @@ fun NurseryRhymesBoard(
                 IconButton(
                     onClick = {
                         if (soundEnabled && currentLineText.isNotBlank()) {
-                            rhymeTts.speak(currentLineText, learningLanguage)
+                            rhymeSpeech.speak(rhyme.id, game.currentLineIndex, currentLineText, learningLanguage)
                         }
                     },
                     enabled = soundEnabled && currentLineText.isNotBlank()

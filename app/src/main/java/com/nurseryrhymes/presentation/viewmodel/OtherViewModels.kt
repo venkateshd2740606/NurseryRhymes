@@ -60,6 +60,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun setLearningLanguage(language: LearningLanguage) = update { it.copy(learningLanguage = language) }
+    fun setUseBundledAudio(enabled: Boolean) = update { it.copy(useBundledAudio = enabled) }
 
     fun unlockTheme(themeId: String) {
         viewModelScope.launch { progressionRepository.unlockTheme(themeId) }

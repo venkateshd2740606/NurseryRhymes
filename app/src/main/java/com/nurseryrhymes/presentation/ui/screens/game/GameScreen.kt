@@ -28,7 +28,7 @@ import com.nurseryrhymes.presentation.ui.components.NurseryRhymesBoard
 import com.nurseryrhymes.presentation.viewmodel.GameLoadError
 import com.nurseryrhymes.presentation.viewmodel.GameViewModel
 import com.nurseryrhymes.util.FeedbackHelper
-import com.nurseryrhymes.util.rememberRhymeTts
+import com.nurseryrhymes.util.rememberRhymeSpeech
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,6 +55,7 @@ fun GameScreen(
     adsEnabled: Boolean = true,
     reducedMotion: Boolean = false,
     learningLanguage: com.nurseryrhymes.domain.model.LearningLanguage = com.nurseryrhymes.domain.model.LearningLanguage.ENGLISH,
+    useBundledAudio: Boolean = true,
     viewModel: GameViewModel = hiltViewModel()
 ) {
     val game by viewModel.game.collectAsStateWithLifecycle()
@@ -76,7 +77,7 @@ fun GameScreen(
     val rewardedAdReady by adManager.rewardedAdReady.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val activity = context as? Activity
-    val rhymeTts = rememberRhymeTts()
+    val rhymeSpeech = rememberRhymeSpeech(useBundledAudio)
     var paused by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -455,7 +456,7 @@ fun GameScreen(
                         learningLanguage = learningLanguage,
                         reducedMotion = reducedMotion,
                         soundEnabled = soundEnabled,
-                        rhymeTts = rhymeTts,
+                        rhymeSpeech = rhymeSpeech,
                         onNextLine = {
                             viewModel.onNextLine()
                             FeedbackHelper.onPour(context, hapticFeedback, soundEnabled)

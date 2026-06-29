@@ -45,6 +45,7 @@ class PreferencesDataStore @Inject constructor(
         val PERSONALIZED_ADS = booleanPreferencesKey("personalized_ads")
         val LANGUAGE = stringPreferencesKey("language")
         val LEARNING_LANGUAGE = stringPreferencesKey("learning_language")
+        val USE_BUNDLED_AUDIO = booleanPreferencesKey("use_bundled_audio")
         val UNLOCKED_THEMES = stringSetPreferencesKey("unlocked_themes")
     }
 
@@ -70,6 +71,7 @@ class PreferencesDataStore @Inject constructor(
             learningLanguage = runCatching {
                 LearningLanguage.valueOf(prefs[Keys.LEARNING_LANGUAGE] ?: LearningLanguage.ENGLISH.name)
             }.getOrDefault(LearningLanguage.ENGLISH),
+            useBundledAudio = prefs[Keys.USE_BUNDLED_AUDIO] ?: true,
             unlockedThemes = prefs[Keys.UNLOCKED_THEMES] ?: setOf(
                 AppTheme.SYSTEM.name, AppTheme.LIGHT.name, AppTheme.DARK.name
             )
@@ -99,6 +101,7 @@ class PreferencesDataStore @Inject constructor(
                 learningLanguage = runCatching {
                     LearningLanguage.valueOf(prefs[Keys.LEARNING_LANGUAGE] ?: LearningLanguage.ENGLISH.name)
                 }.getOrDefault(LearningLanguage.ENGLISH),
+                useBundledAudio = prefs[Keys.USE_BUNDLED_AUDIO] ?: true,
                 unlockedThemes = prefs[Keys.UNLOCKED_THEMES] ?: setOf(
                     AppTheme.SYSTEM.name, AppTheme.LIGHT.name, AppTheme.DARK.name
                 )
@@ -119,6 +122,7 @@ class PreferencesDataStore @Inject constructor(
             prefs[Keys.PERSONALIZED_ADS] = updated.personalizedAds
             prefs[Keys.LANGUAGE] = updated.language
             prefs[Keys.LEARNING_LANGUAGE] = updated.learningLanguage.name
+            prefs[Keys.USE_BUNDLED_AUDIO] = updated.useBundledAudio
             prefs[Keys.UNLOCKED_THEMES] = updated.unlockedThemes
             LocaleHelper.persistLanguage(context, updated.language)
         }

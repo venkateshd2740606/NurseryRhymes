@@ -295,7 +295,8 @@ fun NurseryRhymesNavHost(
                 adManager = adManager,
                 adsEnabled = preferences.adsEnabled,
                 reducedMotion = preferences.reducedMotion,
-                learningLanguage = preferences.learningLanguage
+                learningLanguage = preferences.learningLanguage,
+                useBundledAudio = preferences.useBundledAudio
             )
         }
         composable(Screen.Stats.route) { StatsScreen(onNavigateBack = { navController.navigateUp() }) }

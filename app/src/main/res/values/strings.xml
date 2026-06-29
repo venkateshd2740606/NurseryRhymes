@@ -92,6 +92,8 @@
     <string name="sound_feedback">Sound &amp; Feedback</string>
     <string name="haptic_feedback">Haptic Feedback</string>
     <string name="sound_effects">Sound Effects</string>
+    <string name="bundled_audio">Bundled rhyme audio</string>
+    <string name="using_tts_fallback">Using voice fallback</string>
     <string name="show_timer">Show Timer</string>
     <string name="themes_unlock">Unlockable Themes</string>
     <string name="unlock_for_coins">Unlock (%d coins)</string>
