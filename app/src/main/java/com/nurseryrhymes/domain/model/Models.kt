@@ -106,15 +106,42 @@ enum class RhymeCategory(val displayName: String) {
     STORY("Story")
 }
 
+enum class LearningLanguage(val displayName: String) {
+    ENGLISH("English"),
+    HINDI("हिंदी"),
+    TELUGU("తెలుగు"),
+    TAMIL("தமிழ்")
+}
+
 data class Rhyme(
     val id: Int,
     val title: String,
     val lines: List<String>,
     val category: RhymeCategory,
-    val illustration: String
+    val illustration: String,
+    val hindiTitle: String? = null,
+    val teluguTitle: String? = null,
+    val tamilTitle: String? = null,
+    val hindiLines: List<String>? = null,
+    val teluguLines: List<String>? = null,
+    val tamilLines: List<String>? = null
 ) {
     init {
         require(lines.isNotEmpty()) { "Each rhyme must have at least one line" }
+    }
+
+    fun titleFor(language: LearningLanguage): String = when (language) {
+        LearningLanguage.ENGLISH -> title
+        LearningLanguage.HINDI -> hindiTitle ?: title
+        LearningLanguage.TELUGU -> teluguTitle ?: title
+        LearningLanguage.TAMIL -> tamilTitle ?: title
+    }
+
+    fun linesFor(language: LearningLanguage): List<String> = when (language) {
+        LearningLanguage.ENGLISH -> lines
+        LearningLanguage.HINDI -> hindiLines ?: lines
+        LearningLanguage.TELUGU -> teluguLines ?: lines
+        LearningLanguage.TAMIL -> tamilLines ?: lines
     }
 }
 
@@ -234,6 +261,7 @@ data class UserPreferences(
     val analyticsEnabled: Boolean = true,
     val personalizedAds: Boolean = false,
     val language: String = "system",
+    val learningLanguage: LearningLanguage = LearningLanguage.ENGLISH,
     val unlockedThemes: Set<String> = setOf(AppTheme.SYSTEM.name, AppTheme.LIGHT.name, AppTheme.DARK.name)
 )
 

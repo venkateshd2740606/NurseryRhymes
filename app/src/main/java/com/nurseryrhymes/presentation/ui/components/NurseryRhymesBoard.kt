@@ -36,12 +36,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nurseryrhymes.R
+import com.nurseryrhymes.domain.model.LearningLanguage
 import com.nurseryrhymes.domain.model.NurseryRhymesGame
 import com.nurseryrhymes.engine.NurseryRhymesEngine
 
 @Composable
 fun NurseryRhymesBoard(
     game: NurseryRhymesGame,
+    learningLanguage: LearningLanguage,
     reducedMotion: Boolean,
     onNextLine: () -> Unit,
     onPrevLine: () -> Unit,
@@ -50,6 +52,7 @@ fun NurseryRhymesBoard(
 ) {
     val boardDescription = stringResource(R.string.color_sort)
     val rhyme = game.currentRhyme ?: return
+    val localizedLines = rhyme.linesFor(learningLanguage)
     val totalLines = game.level.totalLines
     val progress = if (totalLines > 0) {
         game.linesRead.toFloat() / totalLines
@@ -81,7 +84,7 @@ fun NurseryRhymesBoard(
                 text = stringResource(
                     R.string.line_progress,
                     game.currentLineIndex + 1,
-                    rhyme.lines.size
+                    localizedLines.size
                 ),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -106,7 +109,7 @@ fun NurseryRhymesBoard(
         )
 
         Text(
-            text = rhyme.title,
+            text = rhyme.titleFor(learningLanguage),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -119,7 +122,7 @@ fun NurseryRhymesBoard(
             tonalElevation = 2.dp
         ) {
             Text(
-                text = game.currentLine ?: "",
+                text = localizedLines.getOrNull(game.currentLineIndex).orEmpty(),
                 modifier = Modifier.padding(24.dp),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
@@ -161,7 +164,7 @@ fun NurseryRhymesBoard(
                     val isComplete = index in game.completedRhymeIndices
                     RhymePickerChip(
                         emoji = levelRhyme.illustration,
-                        title = levelRhyme.title,
+                        title = levelRhyme.titleFor(learningLanguage),
                         isSelected = isSelected,
                         isComplete = isComplete,
                         onClick = { onRhymeSelected(index) }

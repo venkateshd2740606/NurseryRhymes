@@ -53,6 +53,7 @@ fun GameScreen(
     adManager: AdManager,
     adsEnabled: Boolean = true,
     reducedMotion: Boolean = false,
+    learningLanguage: com.nurseryrhymes.domain.model.LearningLanguage = com.nurseryrhymes.domain.model.LearningLanguage.ENGLISH,
     viewModel: GameViewModel = hiltViewModel()
 ) {
     val game by viewModel.game.collectAsStateWithLifecycle()
@@ -449,6 +450,7 @@ fun GameScreen(
                 } else {
                     NurseryRhymesBoard(
                         game = g,
+                        learningLanguage = learningLanguage,
                         reducedMotion = reducedMotion,
                         onNextLine = {
                             viewModel.onNextLine()

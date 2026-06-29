@@ -10,6 +10,7 @@ import com.nurseryrhymes.domain.model.ColorBlindMode
 import com.nurseryrhymes.domain.model.Difficulty
 import com.nurseryrhymes.domain.model.EconomyState
 import com.nurseryrhymes.domain.model.PuzzleProfile
+import com.nurseryrhymes.domain.model.LearningLanguage
 import com.nurseryrhymes.domain.model.UserPreferences
 import com.nurseryrhymes.domain.model.UserStats
 import com.nurseryrhymes.domain.repository.ChallengeRepository
@@ -57,6 +58,8 @@ class SettingsViewModel @Inject constructor(
             LocaleHelper.applyAppLocale(languageCode)
         }
     }
+
+    fun setLearningLanguage(language: LearningLanguage) = update { it.copy(learningLanguage = language) }
 
     fun unlockTheme(themeId: String) {
         viewModelScope.launch { progressionRepository.unlockTheme(themeId) }
